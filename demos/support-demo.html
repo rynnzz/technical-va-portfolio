@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Support Knowledge Base Demo</title>
+    <link rel="stylesheet" href="demo.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <a class="brand" href="../index.html">Ryan<span>.</span></a>
+        <a class="back" href="../index.html#projects">← Back to portfolio</a>
+      </div>
+    </header>
+    <main class="container">
+      <div class="hero">
+        <div class="eyebrow">SAMPLE WORK · CUSTOMER SUPPORT</div>
+        <h1>Customer Support Knowledge Base</h1>
+        <p>
+          Interactive FAQ, response templates, and escalation guidance for a
+          fictional online store.
+        </p>
+      </div>
+      <div class="grid grid-2">
+        <section class="card">
+          <h2>FAQ</h2>
+          <div id="faqs"></div>
+        </section>
+        <section class="card">
+          <h2>Quick Reply Generator</h2>
+          <label class="small">Choose an inquiry</label>
+          <select id="topic">
+            <option value="order">Order status</option>
+            <option value="refund">Refund request</option>
+            <option value="shipping">Shipping delay</option>
+            <option value="account">Account help</option>
+          </select>
+          <div class="response-box" id="reply"></div>
+          <p class="note">
+            Demo data only. In a client project, the templates would be matched
+            to the brand voice and actual policies.
+          </p>
+        </section>
+      </div>
+      <section class="card" style="margin-top: 18px">
+        <h2>Escalation Workflow</h2>
+        <div class="timeline">
+          <div class="log">
+            <b>1.</b>
+            <div>
+              <strong>Receive inquiry</strong>
+              <span
+                >Check customer identity, order details, and issue
+                category.</span
+              >
+            </div>
+          </div>
+          <div class="log">
+            <b>2.</b>
+            <div>
+              <strong>Resolve using knowledge base</strong>
+              <span
+                >Use an approved answer or troubleshooting step when
+                appropriate.</span
+              >
+            </div>
+          </div>
+          <div class="log">
+            <b>3.</b>
+            <div>
+              <strong>Escalate exceptions</strong>
+              <span
+                >Route billing disputes, damaged orders, and policy exceptions
+                to the correct team.</span
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const data = [
+        [
+          "What is the usual response time?",
+          "Our support team normally replies within one business day. For urgent order issues, please include your order number so we can prioritize the request.",
+        ],
+        [
+          "How can I check my order?",
+          "Use the tracking link in your shipping confirmation email. If you cannot find it, send us your order number and email address and we can help locate it.",
+        ],
+        [
+          "Can I request a refund?",
+          "Refund requests are reviewed according to the store's return policy. Please provide your order number and a brief reason for the request.",
+        ],
+        [
+          "My package is delayed. What should I do?",
+          "Please check the latest carrier scan first. If there has been no movement for several business days, contact support with your order number for assistance.",
+        ],
+      ];
+      const replies = {
+        order:
+          "Hi! Thanks for reaching out. I’d be happy to help check your order status. Please send me your order number and the email used for the purchase.",
+        refund:
+          "Hi! I can help with your refund request. Please send your order number and a short description of the issue so I can check the available options.",
+        shipping:
+          "Thanks for letting us know. Please send your order number and the latest tracking status you see, and we’ll help review the delay.",
+        account:
+          "Absolutely! Please tell me what you’re trying to do with your account and, if relevant, the email address associated with it. I’ll guide you through the next step.",
+      };
+      document.getElementById("faqs").innerHTML = data
+        .map(
+          (x, i) =>
+            `<div class="faq"><button onclick="this.parentElement.classList.toggle('open')">${x[0]} <span>+</span></button><p>${x[1]}</p></div>`,
+        )
+        .join("");
+      const topic = document.getElementById("topic"),
+        reply = document.getElementById("reply");
+      function render() {
+        reply.textContent = replies[topic.value];
+      }
+      topic.addEventListener("change", render);
+      render();
+    </script>
+  </body>
+</html>

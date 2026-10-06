@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Content Calendar Demo</title>
+    <link rel="stylesheet" href="demo.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <a class="brand" href="../index.html">Ryan<span>.</span></a>
+        <a class="back" href="../index.html#projects">← Back to portfolio</a>
+      </div>
+    </header>
+    <main class="container">
+      <div class="hero">
+        <div class="eyebrow">SAMPLE WORK · CONTENT MANAGEMENT</div>
+        <h1>Content Management System</h1>
+        <p>
+          A simple content calendar for planning, tracking, and reviewing social
+          posts.
+        </p>
+      </div>
+      <div class="toolbar">
+        <select id="filter">
+          <option value="all">All platforms</option>
+          <option>Instagram</option>
+          <option>LinkedIn</option>
+          <option>Facebook</option></select
+        ><select id="stage">
+          <option value="all">All stages</option>
+          <option>Idea</option>
+          <option>Draft</option>
+          <option>Ready</option>
+          <option>Published</option>
+        </select>
+      </div>
+      <section class="card">
+        <div class="calendar" id="calendar"></div>
+        <p class="note">
+          Demo calendar uses fictional content. A client version can include
+          brand assets, approval stages, owners, links, hashtags, and publishing
+          dates.
+        </p>
+      </section>
+    </main>
+    <script>
+      const posts = [
+        [
+          "Mon 5",
+          "Instagram",
+          "Published",
+          "3 ways to organize your week",
+          "Carousel",
+        ],
+        [
+          "Tue 6",
+          "LinkedIn",
+          "Ready",
+          "Behind the scenes: our workflow",
+          "Text",
+        ],
+        ["Wed 7", "Facebook", "Draft", "Customer FAQ spotlight", "Graphic"],
+        ["Thu 8", "Instagram", "Idea", "Quick productivity tip", "Reel"],
+        [
+          "Fri 9",
+          "LinkedIn",
+          "Ready",
+          "Small business automation ideas",
+          "Text",
+        ],
+        ["Mon 12", "Facebook", "Idea", "Meet the team", "Photo"],
+        [
+          "Tue 13",
+          "Instagram",
+          "Draft",
+          "Before / after organization",
+          "Carousel",
+        ],
+        [
+          "Wed 14",
+          "LinkedIn",
+          "Published",
+          "Weekly operations checklist",
+          "Document",
+        ],
+        ["Thu 15", "Instagram", "Ready", "Tool of the week", "Graphic"],
+        ["Fri 16", "Facebook", "Draft", "Common customer questions", "Graphic"],
+      ];
+      const cal = document.getElementById("calendar"),
+        filter = document.getElementById("filter"),
+        stage = document.getElementById("stage");
+      function render() {
+        const f = posts.filter(
+          (p) =>
+            (filter.value === "all" || p[1] === filter.value) &&
+            (stage.value === "all" || p[2] === stage.value),
+        );
+        cal.innerHTML = f.length
+          ? f
+              .map(
+                (p) =>
+                  `<div class="day"><strong>${p[0]}</strong><div class="post"><b>${p[3]}</b><small>${p[1]} · ${p[2]} · ${p[4]}</small></div></div>`,
+              )
+              .join("")
+          : `<p>No posts match these filters.</p>`;
+      }
+      filter.addEventListener("change", render);
+      stage.addEventListener("change", render);
+      render();
+    </script>
+  </body>
+</html>
