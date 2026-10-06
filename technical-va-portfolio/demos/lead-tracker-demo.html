@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Lead Tracker Demo</title>
+    <link rel="stylesheet" href="demo.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <a class="brand" href="../index.html">Ryan<span>.</span></a
+        ><a class="back" href="../index.html#projects">← Back to portfolio</a>
+      </div>
+    </header>
+    <main class="container">
+      <div class="hero">
+        <div class="eyebrow">SAMPLE WORK · DATA & CRM</div>
+        <h1>Lead Tracking Dashboard</h1>
+        <p>
+          A small CRM-style tracker showing lead status, follow-up dates,
+          owners, and value.
+        </p>
+      </div>
+      <div class="grid grid-3" id="stats"></div>
+      <section class="card" style="margin-top: 18px">
+        <div class="toolbar">
+          <input id="search" placeholder="Search company or contact" /><select
+            id="status"
+          >
+            <option value="all">All statuses</option>
+            <option>New</option>
+            <option>Contacted</option>
+            <option>Qualified</option>
+            <option>Proposal</option>
+            <option>Won</option></select
+          ><button class="btn" id="reset">Reset</button>
+        </div>
+        <div id="table"></div>
+        <p class="note">
+          All names and companies below are fictional portfolio data.
+        </p>
+      </section>
+    </main>
+    <script>
+      const leads = [
+        {
+          name: "Ava Cruz",
+          company: "Northstar Studio",
+          status: "New",
+          value: 1200,
+          follow: "Oct 10",
+        },
+        {
+          name: "Daniel Lee",
+          company: "Pixel Harbor",
+          status: "Qualified",
+          value: 3500,
+          follow: "Oct 8",
+        },
+        {
+          name: "Mia Santos",
+          company: "BrightPath Co.",
+          status: "Proposal",
+          value: 5200,
+          follow: "Oct 9",
+        },
+        {
+          name: "Noah Kim",
+          company: "LaunchCraft",
+          status: "Contacted",
+          value: 1800,
+          follow: "Oct 11",
+        },
+        {
+          name: "Sofia Reyes",
+          company: "FlowMint",
+          status: "Won",
+          value: 4200,
+          follow: "Oct 7",
+        },
+        {
+          name: "Ethan Tan",
+          company: "CloudNine Media",
+          status: "Qualified",
+          value: 2800,
+          follow: "Oct 12",
+        },
+        {
+          name: "Liam Garcia",
+          company: "OrbitDesk",
+          status: "New",
+          value: 900,
+          follow: "Oct 13",
+        },
+      ];
+      const search = document.getElementById("search"),
+        status = document.getElementById("status");
+      function filtered() {
+        return leads.filter(
+          (l) =>
+            (status.value === "all" || l.status === status.value) &&
+            `${l.name} ${l.company}`
+              .toLowerCase()
+              .includes(search.value.toLowerCase()),
+        );
+      }
+      function renderStats() {
+        const total = leads.length,
+          pipeline = leads
+            .filter((l) => l.status !== "Won")
+            .reduce((a, l) => a + l.value, 0),
+          won = leads
+            .filter((l) => l.status === "Won")
+            .reduce((a, l) => a + l.value, 0);
+        document.getElementById("stats").innerHTML = [
+          [total, "Total Leads"],
+          [`$${pipeline.toLocaleString()}`, "Open Pipeline"],
+          [`$${won.toLocaleString()}`, "Won Value"],
+        ]
+          .map(
+            (x) =>
+              `<div class="stat"><strong>${x[0]}</strong><span>${x[1]}</span></div>`,
+          )
+          .join("");
+      }
+      function render() {
+        const rows = filtered();
+        document.getElementById("table").innerHTML =
+          `<table><thead><tr><th>Contact</th><th>Company</th><th>Status</th><th>Value</th><th>Next Follow-up</th></tr></thead><tbody>${rows.map((l) => `<tr><td>${l.name}</td><td>${l.company}</td><td><span class="badge ${l.status === "Won" ? "" : "blue"}">${l.status}</span></td><td>$${l.value.toLocaleString()}</td><td>${l.follow}</td></tr>`).join("")}</tbody></table>${rows.length === 0 ? '<p style="padding:20px 0">No matching leads.</p>' : ""}`;
+      }
+      search.addEventListener("input", render);
+      status.addEventListener("change", render);
+      document.getElementById("reset").addEventListener("click", () => {
+        search.value = "";
+        status.value = "all";
+        render();
+      });
+      renderStats();
+      render();
+    </script>
+  </body>
+</html>
